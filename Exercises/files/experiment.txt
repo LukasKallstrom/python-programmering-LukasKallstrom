@@ -1,0 +1,40 @@
+
+In 10 runs:
+Number of 1s: 0. Probability of 1: 0.0%
+Number of 2s: 2. Probability of 2: 20.0%
+Number of 3s: 0. Probability of 3: 0.0%
+Number of 4s: 2. Probability of 4: 20.0%
+Number of 5s: 1. Probability of 5: 10.0%
+Number of 6s: 5. Probability of 6: 50.0%
+
+In 100 runs:
+Number of 1s: 14. Probability of 1: 14.0%
+Number of 2s: 20. Probability of 2: 20.0%
+Number of 3s: 18. Probability of 3: 18.0%
+Number of 4s: 14. Probability of 4: 14.0%
+Number of 5s: 21. Probability of 5: 21.0%
+Number of 6s: 13. Probability of 6: 13.0%
+
+In 1000 runs:
+Number of 1s: 166. Probability of 1: 16.6%
+Number of 2s: 184. Probability of 2: 18.4%
+Number of 3s: 156. Probability of 3: 15.6%
+Number of 4s: 172. Probability of 4: 17.2%
+Number of 5s: 165. Probability of 5: 16.5%
+Number of 6s: 157. Probability of 6: 15.7%
+
+In 10000 runs:
+Number of 1s: 1668. Probability of 1: 16.68%
+Number of 2s: 1699. Probability of 2: 16.99%
+Number of 3s: 1670. Probability of 3: 16.7%
+Number of 4s: 1687. Probability of 4: 16.87%
+Number of 5s: 1696. Probability of 5: 16.96%
+Number of 6s: 1580. Probability of 6: 15.8%
+
+In 100000 runs:
+Number of 1s: 16625. Probability of 1: 16.625%
+Number of 2s: 16824. Probability of 2: 16.824%
+Number of 3s: 16692. Probability of 3: 16.692%
+Number of 4s: 16712. Probability of 4: 16.712%
+Number of 5s: 16617. Probability of 5: 16.617%
+Number of 6s: 16530. Probability of 6: 16.53%
