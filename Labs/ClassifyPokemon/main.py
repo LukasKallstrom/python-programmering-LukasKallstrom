@@ -1,4 +1,5 @@
 from matplotlib import colors
+from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import math
 
@@ -38,18 +39,18 @@ def classify_five_points(data_points:int, x_points:list, y_points:list, is_userd
                 
                 if is_userdata == False:
                     print(f"Sample with (width, height): ({x_points[j]:.0f}, {y_points[j]:.0f}) classified as Pichu")
-                    plt.scatter(x_points[j],y_points[j], c="green", s=100, label="Classified as pichu")
+                    plt.scatter(x_points[j],y_points[j], c="green", s=100, label="Classified as Pichu")
                 if is_userdata == True:
                     print(f"User sample with (width, height): ({x_points[j]:.0f}, {y_points[j]:.0f}) classified as Pichu")
-                    plt.scatter(x_points[j],y_points[j], c="darkolivegreen", s=150, marker="x", label="Userdata classified as pichu")
+                    plt.scatter(x_points[j],y_points[j], c="darkolivegreen", s=150, label="Userdata classified as pichu")
             else:                       # if the avarage between the 5 points instead is smaller for pikachu, the data is classified as pikachu and is then plotted
                 
                 if is_userdata == False:
                     print(f"Sample with (width, height): ({x_points[j]:.0f}, {y_points[j]:.0f}) classified as Pikachu")
-                    plt.scatter(x_points[j],y_points[j], c="firebrick", s=100, label ="Classified as Pikachu")
+                    plt.scatter(x_points[j],y_points[j], c="firebrick", s=100, label="Classified as Pikachu")
                 if is_userdata == True:
                     print(f"User sample with (width, height): ({x_points[j]:.0f}, {y_points[j]:.0f}) classified as Pikachu")
-                    plt.scatter(x_points[j],y_points[j], c="maroon", s=150, marker="x", label ="Userdata classified as Pikachu")
+                    plt.scatter(x_points[j],y_points[j], c="maroon", s=150, label= "Userdata classified as Pikachu")
 
 
 def classify_closest_point(data_points:int, x_points:list, y_points:list ,is_userdata:bool = False, pichu_color:str = "green", pika_color:str = "firebrick"):
@@ -79,28 +80,26 @@ def get_userdata(): # Let's the user input data and approprietly handles errors 
             try:
                 answ = str(answ)
                 if answ.upper() == "Y":
-                    user_data = input("Please input coordinates: (x y) 0 < x,y < 100: ").split()
-                    if len(user_data) == 2:
-                        while True:
-                            if 0 > float(user_data[0]) > 100  or  0 > float(user_data[1]) > 100:
-                                print("Please input a number thats larger than 0 and smaller than 100")
+                    user_data = input("Please input coordinates: (x y): ").split()
+                    try:
+                        if len(user_data) == 2:
+                            try:
+                                user_x.append(float(user_data[0]))
+                                user_y.append(float(user_data[1]))
                                 break
-                            else:
-                                try:
-                                    user_x.append(float(user_data[0]))
-                                    user_y.append(float(user_data[1]))
-                                    break
-                                except TypeError:
-                                    print("Please input a 2d coordinate (consisting of numbers)")
-                    else:
-                        print("Please input a 2d coordinate")
+                            except TypeError:
+                                print("Please input a 2d coordinate (consisting of numbers)")
+                        else:
+                            print("Please input a 2d coordinate")
+                    except ValueError as err:
+                        print(err)
                 elif answ.upper() == "N":
                     print("User input ended")
                     break
             except TypeError as err:
                 print(err)
 
-with open("Labs/ClassifyPokemon/files/pichu.txt", "r") as f_pichu, open("Labs/ClassifyPokemon/files/pikachu.txt", "r") as f_pikachu, open("Labs/ClassifyPokemon/files/test_points.txt", "r") as f_testpoints:
+with open("files/pichu.txt", "r") as f_pichu, open("files/pikachu.txt", "r") as f_pikachu, open("files/test_points.txt", "r") as f_testpoints:
 
     pichu_data = f_pichu.readlines()
     pikachu_data = f_pikachu.readlines() # read every data file
@@ -117,25 +116,28 @@ with open("Labs/ClassifyPokemon/files/pichu.txt", "r") as f_pichu, open("Labs/Cl
     user_x = []
     user_y = []
     
-    
     remove_clutter(pichu_data, pichu_x, pichu_y)
     remove_clutter(pikachu_data, pikachu_x, pikachu_y) # removes clutter from all our datafiles and stores them in appropriate lists
     remove_clutter(test_points, test_points_x, test_points_y)
-
+    
     plt.scatter(pichu_x, pichu_y, c="lime", label = "Pichu") # plot all original pichu and pikachu data
     plt.scatter(pikachu_x, pikachu_y, c="magenta", label = "Pikachu")
 
-    classified_pichu =  []
-    classified_pikachu = []
-        
     get_userdata()
-    classify_five_points(len(user_x),user_x, user_y, True) # This setup let's the user input values as many times as they want and every input will plot approprietly
     classify_five_points(len(test_points_x), test_points_x, test_points_y)
+    classify_five_points(len(user_x),user_x, user_y, True)
 
-    plt.legend(loc='best')
+    '''Since i dont wanna add a legend entry everytime we iterate over our classify_five_points() function, i use matplotlib's Line2D to create the legend manually, taken from here (source): "https://matplotlib.org/stable/gallery/text_labels_and_annotations/custom_legends.html"'''
+    legend_elements = [Line2D([0], [0], color="w",markerfacecolor="lime", marker="o", label="Pichu"),
+    Line2D([0], [0], color="w",markerfacecolor="magenta", marker="o", label="Pikachu"),
+    Line2D([0], [0], color="w",markerfacecolor="green", marker="o",markersize=10, label="Classified as Pichu"),
+    Line2D([0], [0], color="w",markerfacecolor="firebrick", marker="o",markersize=10, label="Classified as Pikachu"),
+    Line2D([0], [0], color="w",markerfacecolor="darkolivegreen", marker="o",markersize=12, label="Userdata classified as pichu"),
+    Line2D([0], [0], color="w",markerfacecolor="maroon", marker="o",markersize=12, label="Usedata classified as Pikachu")]
 
-    #plt.axis(ymax=50,xmax=50)
+    plt.legend(handles=legend_elements, loc="best", prop={'size': 10})
     plt.title('Pokemon Classification')
+    
     plt.xlabel("Width")
     plt.ylabel("Heigth")
     plt.show()
