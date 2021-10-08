@@ -13,8 +13,6 @@ class Shapes():
     def x(self, x) -> float:
         if not isinstance(x, (float,int)):
             raise TypeError(f"{x} must be float or int")
-        if x < 0:
-            raise ValueError("x must be larger than 0")
         self._x = x
     
     @property
@@ -25,10 +23,14 @@ class Shapes():
     def y(self, y) -> float:
         if not isinstance(y, (float,int)):
             raise TypeError(f"{y} must be float or int")
-        if y < 0:
-            raise ValueError("y must be larger than 0")
         self._y = y
-    
+
+    def translate(self, value_x: float, value_y: float) -> None:
+        if not isinstance(value_x, (float, int)) or not isinstance(value_y, (float, int)):
+            raise ValueError(f"{value_x} and {value_y} must be float or int")
+        self.x += value_x
+        self.y += value_y
+
     def __repr__(self) -> str:
         return f"Shape(x:{self.x}, y:{self.y})"
     
@@ -42,7 +44,6 @@ class Circle(Shapes):
     
     @property
     def radius(self) -> None:
-        print("Radius getter running")
         return self._radius
 
     @radius.setter
@@ -54,10 +55,28 @@ class Circle(Shapes):
         self._radius = radius
 
     def set_area(self) -> float:
+        """Returns the area of the circle"""
         return math.pi * self.radius**2
 
     def set_circumf(self) -> float:
+        """Returns the circumferance of the circle"""
         return 2 * math.pi * self.radius
+
+    def __repr__(self) -> str:
+        return f"Circle(x={self.x}, y={self.y}, radius={self.radius})"
+
+    def validate_circle(self, other:"Circle") -> bool:
+        """Validates that the other object is of class 'Circle'"""
+        if not isinstance(other,Circle):
+            raise TypeError("Both must be of class Circle")
+        return True
+
+    def __eq__(self, other:"Circle") -> bool:
+        if not self.validate_circle(other):
+            return False
+        if self.radius != other.radius:
+            return False
+        return True
 
 
 class Rectangle(Shapes):
@@ -97,6 +116,22 @@ class Rectangle(Shapes):
 
     def set_circumf(self) -> float:
         return (self.side1*2) + (self.side2*2)
+
+    def validate_rect(self, other) -> bool:
+        """Validates that both is of type 'Rectangle'"""
+        if not isinstance(other, Rectangle):
+            raise TypeError("Both must be of type Rectangle")
+        return True
+
+    def __eq__(self, other:"Circle") -> bool:
+        if not self.validate_rect(other):
+            return False
+        if self.side1 != other.side1 or self.side2 != other.side2:
+            return False
+        return True
+
+    def __repr__(self) -> str:
+        return f"Rectangle(x={self.x}, y={self.y}, side1={self.side1}, side2={self.side2})"
 
     
 
