@@ -202,18 +202,6 @@ class Cube(Rectangle):
         self.volume = self.set_volume()
         self.z = z
 
-    @property
-    def z(self) -> None:
-        """Makes z a property"""
-        return self._z
-
-    @z.setter
-    def z(self, z) -> float:
-        """Creates a z setter with error-handling"""
-        if not isinstance(z, (float, int)):
-            raise TypeError(f"{z} must be float or int")
-        self._z = z
-
     def set_surface_area(self) -> float:
         """Returns the surface area of the cube"""
         return 6 * (self.side1**2)
@@ -234,15 +222,6 @@ class Cube(Rectangle):
                 return False
             raise TypeError(f"z: {z} must be of type int or float")
         return False
-
-    def translate(self,
-                  value_x: float,
-                  value_y: float,
-                  value_z: float) -> None:
-        Shapes.translate(self, value_x, value_y)
-        if not isinstance(value_z, (float, int)):
-            raise TypeError(f"value_z {value_z} must be of type float or int")
-        self.z += value_z
 
 
 class Sphere(Circle):
