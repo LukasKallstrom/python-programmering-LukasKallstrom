@@ -116,7 +116,7 @@ class Circle(Shapes):
 
 
 class Rectangle(Shapes):
-    def __init__(self, y, x, side1, side2) -> None:
+    def __init__(self, x, y, side1, side2) -> None:
         """Initiates our Rectangle class, inheriting from our Shapes class"""
         super().__init__(x, y)
         self.side1 = side1
@@ -195,9 +195,9 @@ class Rectangle(Shapes):
 
 
 class Cube(Rectangle):
-    def __init__(self, y, x, z, side1) -> None:
+    def __init__(self, x, y, z, side1) -> None:
         """Cube initiation, inheriting from the Rectangle class"""
-        super().__init__(y, x, side1, side2=side1)
+        super().__init__(x, y, side1, side2=side1)
         self.surface_area = self.set_surface_area()
         self.volume = self.set_volume()
         self.z = z
