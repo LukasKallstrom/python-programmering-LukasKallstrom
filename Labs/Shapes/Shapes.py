@@ -90,14 +90,17 @@ class Circle(Shapes):
     def __repr__(self) -> str:
         return f"Circle(x={self.x}, y={self.y}, radius={self.radius})"
 
-    def validate_circle(self, other: "Circle") -> bool:
-        """Validates that the other object is of class 'Circle'"""
+    def validate_circle(self, other) -> bool:
+        """Check if other is of type Circle"""
         if not isinstance(other, Circle):
             return False
         return True
 
-    def __eq__(self, other: "Circle" or "Sphere") -> bool:
-        """Check if the circle is equal to another circle"""
+    def __eq__(self, other: "Circle") -> bool:
+        """Validates that the both objects are of the same type,
+            both being 'Circle', or both being 'Sphere'
+            Raises error if wrong type, returns false if not the same size
+            """
         if not self.validate_circle(other):
             return False
         if self.radius != other.radius:
@@ -107,7 +110,8 @@ class Circle(Shapes):
     def is_inside(self, x: float, y: float) -> bool:
         """Calculate if a point is inside of our circle
             using the pythagoran theorem
-            (on the circle counts as inside the circle)"""
+            (on the circle counts as inside the circle)
+            """
         if not isinstance(x, (int, float)) or not isinstance(x, (float, int)):
             raise TypeError("x and y must be of type float or int")
         if (((x - self.x)**2 + (y - self.y) ** 2) <= self.radius**2):
@@ -161,14 +165,16 @@ class Rectangle(Shapes):
         return (self.side1*2) + (self.side2*2)
 
     def validate_rect(self, other) -> bool:
-        """Validates that both is of type 'Rectangle'"""
+        """Validates that other is of type 'Rectangle'"""
         if not isinstance(other, Rectangle):
-            raise TypeError("Both must be of type Rectangle")
+            return False
         return True
 
-    def __eq__(self, other: "Rectangle" or "Cube") -> bool:
-        """Checks if the rectangle has the same sides as another rectangle
-           (works for child class 'Cube' aswell)"""
+    def __eq__(self, other) -> bool:
+        """Validates that the both objects are of the same type and size,
+            both being 'Rectangle', or both being 'Cube'
+            Raises error if wrong type, returns false if not the same size
+            """
         if not self.validate_rect(other):
             return False
         if self.side1 != other.side1 or self.side2 != other.side2:
@@ -200,7 +206,6 @@ class Cube(Rectangle):
         super().__init__(x, y, side1, side2=side1)
         self.surface_area = self.set_surface_area()
         self.volume = self.set_volume()
-        self.z = z
 
     def set_surface_area(self) -> float:
         """Returns the surface area of the cube"""
@@ -209,6 +214,23 @@ class Cube(Rectangle):
     def set_volume(self) -> float:
         """Returns the volume of the cube"""
         return self.side1 ** 3
+    
+    def validate_cube(self, other) -> bool:
+        """Check if other is of type Cube"""
+        if not isinstance(other, Cube):
+            return False
+        return True
+
+    def __eq__(self, other: "Cube") -> bool:
+        """Validates that the both objects are of the same type,
+            both being 'Cube', or both being 'Cube'
+            Raises error if wrong type, returns false if not the same size
+            """
+        if not self.validate_cube(other):
+            return False
+        if self.side1 != other.side1:
+            return False
+        return True
 
     def __repr__(self) -> str:
         return (f"Cube(x={self.x}, y={self.y}, z={self.z} " +
@@ -242,7 +264,8 @@ class Sphere(Circle):
     def is_inside(self, x: float, y: float, z: float) -> bool:
         """Calculate if a point is inside of our Sphere
             using the pythagoran theorem
-            (on the Sphere counts as inside the Sphere)"""
+            (on the Sphere counts as inside the Sphere)
+            """
         if (not isinstance(x, (float, int)) or
            not isinstance(y, (float, int)) or
            not isinstance(z, (float, int))):
@@ -251,6 +274,23 @@ class Sphere(Circle):
                 <= self.radius**2):
             return True
         return False
+
+    def validate_sphere(self, other) -> bool:
+        """Check if other is of type Sphere"""
+        if not isinstance(other, Sphere):
+            return False
+        return True
+
+    def __eq__(self, other: "Sphere") -> bool:
+        """Validates that the both objects are of the same type,
+            both being 'Sphere', or both being 'Sphere'
+            Raises error if wrong type, returns false if not the same size
+            """
+        if not self.validate_sphere(other):
+            return False
+        if self.radius != other.radius:
+            return False
+        return True
 
     def __repr__(self) -> str:
         return (f"Sphere(x={self.x}, y={self.y}, " +
