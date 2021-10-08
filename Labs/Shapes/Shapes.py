@@ -214,7 +214,7 @@ class Cube(Rectangle):
     def set_volume(self) -> float:
         """Returns the volume of the cube"""
         return self.side1 ** 3
-    
+
     def validate_cube(self, other) -> bool:
         """Check if other is of type Cube"""
         if not isinstance(other, Cube):
