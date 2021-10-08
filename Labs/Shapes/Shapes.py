@@ -48,7 +48,7 @@ class Circle(Shapes):
         """Initiates our circle class, inheriting from our Shapes class"""
         super().__init__(x, y)
         self.radius = radius
-        self.area = self.set_area()
+        self.face_area = self.set_face_area()
         self.circumf = self.set_circumf()
 
     @property
@@ -65,8 +65,8 @@ class Circle(Shapes):
             raise ValueError("radius must be larger than 0")
         self._radius = radius
 
-    def set_area(self) -> float:
-        """Returns the area of the circle"""
+    def set_face_area(self) -> float:
+        """Returns the face_area of the circle"""
         return math.pi * self.radius**2
 
     def set_circumf(self) -> float:
@@ -79,7 +79,7 @@ class Circle(Shapes):
     def validate_circle(self, other: "Circle") -> bool:
         """Validates that the other object is of class 'Circle'"""
         if not isinstance(other, Circle):
-            raise TypeError("Both must be of class Circle")
+            return False
         return True
 
     def __eq__(self, other: "Circle") -> bool:
@@ -102,12 +102,12 @@ class Circle(Shapes):
 
 
 class Rectangle(Shapes):
-    def __init__(self, y, x, side1=1, side2=1) -> None:
+    def __init__(self, y, x, side1, side2) -> None:
         """Initiates our Rectangle class, inheriting from our Shapes class"""
         super().__init__(x, y)
         self.side1 = side1
         self.side2 = side2
-        self.area = self.set_area()
+        self.face_area = self.set_face_area()
         self.circumf = self.set_circumf()
 
     @property
@@ -138,8 +138,8 @@ class Rectangle(Shapes):
             raise ValueError("Side 2 must be larger than 0")
         self._side2 = side2
 
-    def set_area(self) -> float:
-        """Returns the area of the rectangle"""
+    def set_face_area(self) -> float:
+        """Returns the face_area of the rectangle"""
         return self.side1 * self.side2
 
     def set_circumf(self) -> float:
@@ -153,7 +153,8 @@ class Rectangle(Shapes):
         return True
 
     def __eq__(self, other: "Circle") -> bool:
-        """Checks if the rectangle has the same sides as another rectangle"""
+        """Checks if the rectangle has the same sides as another rectangle
+           (works for child class 'Cube' aswell)"""
         if not self.validate_rect(other):
             return False
         if self.side1 != other.side1 or self.side2 != other.side2:
@@ -162,7 +163,7 @@ class Rectangle(Shapes):
 
     def is_inside(self, x: float, y: float) -> bool:
         """Calculate if a point is inside the rectangle
-           inspiration:
+           code source (has been re-formated):
            https://www.tutorialspoint.com/check-if-a-point-lies-on-or-inside-a-rectangle-in-python
            Checks if the given point is to the right of our rectangles x and y,
            and to the left of our side1 and side2.
@@ -170,10 +171,61 @@ class Rectangle(Shapes):
            """
         if not isinstance(x, (float, int)) or not isinstance(y, (float, int)):
             raise TypeError(f"x: {x} and y: {y} must be of type float or int")
-        if (x > self.x and x < self.side1 and y > self.y and y < self.side2):
+        if x > self.x and x < self.side1 and y > self.y and y < self.side2:
             return True
         return False
 
     def __repr__(self) -> str:
         return (f"Rectangle(x={self.x}, y={self.y}, " +
                 f"side1={self.side1}, side2={self.side2})")
+
+
+class Cube(Rectangle):
+    def __init__(self, y, x, z, side1) -> None:
+        """Cube initiation, inheriting from the Rectangle class"""
+        super().__init__(y, x, side1, side2=side1)
+        self.surface_area = self.set_surface_area()
+        self.volume = self.set_volume()
+        self.z = z
+
+    @property
+    def z(self) -> None:
+        """Makes z a property"""
+        return self._z
+
+    @z.setter
+    def z(self, z) -> float:
+        """Creates a z setter with error-handling"""
+        if not isinstance(z, (float, int)):
+            raise TypeError(f"{z} must be float or int")
+        self._z = z
+
+    def set_surface_area(self) -> float:
+        """Returns the surface area of the cube"""
+        return 6 * (self.side1**2)
+
+    def set_volume(self) -> float:
+        """Returns the volume of the cube"""
+        return self.side1 ** 3
+
+    def __repr__(self) -> str:
+        return (f"Cube(x={self.x}, y={self.y}, z={self.z} " +
+                f"side={self.side1})")
+
+    def is_inside_cube(self, x: float, y: float, z: float) -> bool:
+        if self.is_inside(x, y):
+            if isinstance(z, (float, int)):
+                if z > self.z and z < self.side1:
+                    return True
+                return False
+            raise TypeError(f"z: {z} must be of type int or float")
+        return False
+
+    def translate(self,
+                  value_x: float,
+                  value_y: float,
+                  value_z: float) -> None:
+        Shapes.translate(self, value_x, value_y)
+        if not isinstance(value_z, (float, int)):
+            raise TypeError(f"value_z {value_z} must be of type float or int")
+        self.z += value_z
