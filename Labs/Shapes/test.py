@@ -83,7 +83,8 @@ class Circle(Shapes):
 
     def is_inside(self, x: float, y: float) -> bool:
         """Calculate if a point is inside of our circle
-            using the pythagoran theorem"""
+            using the pythagoran theorem
+            (on the circle counts as inside the circle)"""
         if not isinstance(x, (int, float)) or not isinstance(x, (float, int)):
             raise TypeError("x and y must be of type float or int")
         if (((x - self.x)**2 + (y - self.y) ** 2) <= self.radius**2):
@@ -141,6 +142,20 @@ class Rectangle(Shapes):
         if self.side1 != other.side1 or self.side2 != other.side2:
             return False
         return True
+
+    def is_inside(self, x: float, y: float) -> bool:
+        """Calculate if a point is inside the rectangle
+           inspiration:
+           https://www.tutorialspoint.com/check-if-a-point-lies-on-or-inside-a-rectangle-in-python
+           Checks if the given point is to the right of our rectangles x and y,
+           and to the left of our side1 and side2.
+           If so, returns True. Else, false
+           """
+        if not isinstance(x, (float, int)) or not isinstance(y, (float, int)):
+            raise TypeError(f"x: {x} and y: {y} must be of type float or int")
+        if (x > self.x and x < self.side1 and y > self.y and y < self.side2):
+            return True
+        return False
 
     def __repr__(self) -> str:
         return (f"Rectangle(x={self.x}, y={self.y}, " +
