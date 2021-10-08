@@ -2,31 +2,37 @@ import math
 
 
 class Shapes():
+    """Initiates our Shapes class"""
     def __init__(self, x: float, y: float) -> None:
         self.x = x
         self.y = y
 
     @property
     def x(self) -> None:
+        """Makes x a property"""
         return self._x
 
     @x.setter
     def x(self, x) -> float:
+        """Creates a x setter with basic error-handling"""
         if not isinstance(x, (float, int)):
             raise TypeError(f"{x} must be float or int")
         self._x = x
 
     @property
     def y(self) -> None:
+        """Makes y a property"""
         return self._y
 
     @y.setter
     def y(self, y) -> float:
+        """Creates a y setter with basic error-handling"""
         if not isinstance(y, (float, int)):
             raise TypeError(f"{y} must be float or int")
         self._y = y
 
     def translate(self, value_x: float, value_y: float) -> None:
+        """Translate the shapes x and y by the given x and y"""
         if not isinstance(value_x, (float, int)) or \
            not isinstance(value_y, (float, int)):
             raise ValueError(f"{value_x} and {value_y} must be float or int")
@@ -39,6 +45,7 @@ class Shapes():
 
 class Circle(Shapes):
     def __init__(self, x: float, y: float, radius: float) -> None:
+        """Initiates our circle class, inheriting from our Shapes class"""
         super().__init__(x, y)
         self.radius = radius
         self.area = self.set_area()
@@ -46,10 +53,12 @@ class Circle(Shapes):
 
     @property
     def radius(self) -> None:
+        """Makes radius a property"""
         return self._radius
 
     @radius.setter
     def radius(self, radius) -> float:
+        """Create a radius setter with error-handling"""
         if not isinstance(radius, (float, int)):
             raise TypeError(f"{radius} must be float or int")
         if radius < 0:
@@ -94,6 +103,7 @@ class Circle(Shapes):
 
 class Rectangle(Shapes):
     def __init__(self, y, x, side1=1, side2=1) -> None:
+        """Initiates our Rectangle class, inheriting from our Shapes class"""
         super().__init__(x, y)
         self.side1 = side1
         self.side2 = side2
@@ -102,10 +112,12 @@ class Rectangle(Shapes):
 
     @property
     def side1(self) -> None:
+        """Makes side1 a property"""
         return self._side1
 
     @side1.setter
     def side1(self, side1) -> float:
+        """Creates a side1 setter with error-handling"""
         if not isinstance(side1, (float, int)):
             raise TypeError(f"{side1} must be float or int")
         if side1 <= 0:
@@ -114,10 +126,12 @@ class Rectangle(Shapes):
 
     @property
     def side2(self) -> None:
+        """Makes side2 a property"""
         return self._side2
 
     @side2.setter
     def side2(self, side2) -> float:
+        """Creates a side2 setter with error-handling"""
         if not isinstance(side2, (float, int)):
             raise TypeError(f"{side2} must be float or int")
         if side2 <= 0:
@@ -125,9 +139,11 @@ class Rectangle(Shapes):
         self._side2 = side2
 
     def set_area(self) -> float:
+        """Returns the area of the rectangle"""
         return self.side1 * self.side2
 
     def set_circumf(self) -> float:
+        """Returns the circumferance of the rectangle"""
         return (self.side1*2) + (self.side2*2)
 
     def validate_rect(self, other) -> bool:
@@ -137,6 +153,7 @@ class Rectangle(Shapes):
         return True
 
     def __eq__(self, other: "Circle") -> bool:
+        """Checks if the rectangle has the same sides as another rectangle"""
         if not self.validate_rect(other):
             return False
         if self.side1 != other.side1 or self.side2 != other.side2:
