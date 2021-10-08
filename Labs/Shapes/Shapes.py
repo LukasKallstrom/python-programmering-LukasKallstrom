@@ -247,19 +247,26 @@ class Cube(Rectangle):
 
 class Sphere(Circle):
     def __init__(self, x: float, y: float, z: float, radius: float) -> None:
+        """Initiate Sphere class"""
         super().__init__(x, y, z, radius)
+        self.volume = self.set_volume()
+        self.surface_area = self.set_surface_area()
 
     def set_volume(self) -> float:
+        """Returns the volume of our 3D sphere"""
         return (4/3) * math.pi * (self.radius ** 3)
 
     def set_surface_area(self) -> float:
+        """returns the surface area of our 3D sphere"""
         return 4 * math.pi * self.radius**2
 
     def is_inside(self, x: float, y: float, z: float) -> bool:
-        """Calculate if a point is inside of our circle
+        """Calculate if a point is inside of our Sphere
             using the pythagoran theorem
-            (on the circle counts as inside the circle)"""
-        if not isinstance(x, (int, float)) or not isinstance(x, (float, int)):
+            (on the Sphere counts as inside the Sphere)"""
+        if (not isinstance(x, (float, int)) or
+           not isinstance(y, (float, int)) or
+           not isinstance(z, (float, int))):
             raise TypeError("x and y must be of type float or int")
         if (((x - self.x)**2 + (y - self.y) ** 2 + (z - self.z)**2)
                 <= self.radius**2):
