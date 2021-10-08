@@ -29,6 +29,9 @@ class Shapes():
             raise ValueError("y must be larger than 0")
         self._y = y
     
+    def __repr__(self) -> str:
+        return f"Shape(x:{self.x}, y:{self.y})"
+    
 
 class Circle(Shapes):
     def __init__(self, x:float, y:float, radius:float) -> None:
@@ -63,6 +66,7 @@ class Rectangle(Shapes):
         self.side1 = side1
         self.side2 = side2
         self.area = self.set_area()
+        self.circumf = self.set_circumf()
 
     @property
     def side1(self) -> None:
@@ -90,6 +94,9 @@ class Rectangle(Shapes):
 
     def set_area(self) -> float:
         return self.side1 * self.side2
+
+    def set_circumf(self) -> float:
+        return (self.side1*2) + (self.side2*2)
 
     
 
