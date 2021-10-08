@@ -3,9 +3,10 @@ import math
 
 class Shapes():
     """Initiates our Shapes class"""
-    def __init__(self, x: float, y: float) -> None:
+    def __init__(self, x: float, y: float, z=0) -> None:
         self.x = x
         self.y = y
+        self.z = z
 
     @property
     def x(self) -> None:
@@ -31,22 +32,35 @@ class Shapes():
             raise TypeError(f"{y} must be float or int")
         self._y = y
 
-    def translate(self, value_x: float, value_y: float) -> None:
+    @property
+    def z(self) -> None:
+        """Makes z a property"""
+        return self._z
+
+    @z.setter
+    def z(self, z) -> float:
+        """Creates a z setter with basic error-handling"""
+        if not isinstance(z, (float, int)):
+            raise TypeError(f"{z} must be float or int")
+        self._z = z
+
+    def translate(self, value_x: float, value_y: float, value_z=0) -> None:
         """Translate the shapes x and y by the given x and y"""
         if not isinstance(value_x, (float, int)) or \
            not isinstance(value_y, (float, int)):
             raise ValueError(f"{value_x} and {value_y} must be float or int")
         self.x += value_x
         self.y += value_y
+        self.z += value_z
 
     def __repr__(self) -> str:
         return f"Shape(x:{self.x}, y:{self.y})"
 
 
 class Circle(Shapes):
-    def __init__(self, x: float, y: float, radius: float) -> None:
+    def __init__(self, x: float, y: float, z: float, radius: float) -> None:
         """Initiates our circle class, inheriting from our Shapes class"""
-        super().__init__(x, y)
+        super().__init__(x, y, z)
         self.radius = radius
         self.face_area = self.set_face_area()
         self.circumf = self.set_circumf()
@@ -82,7 +96,7 @@ class Circle(Shapes):
             return False
         return True
 
-    def __eq__(self, other: "Circle") -> bool:
+    def __eq__(self, other: "Circle" or "Sphere") -> bool:
         """Check if the circle is equal to another circle"""
         if not self.validate_circle(other):
             return False
@@ -152,7 +166,7 @@ class Rectangle(Shapes):
             raise TypeError("Both must be of type Rectangle")
         return True
 
-    def __eq__(self, other: "Circle") -> bool:
+    def __eq__(self, other: "Rectangle" or "Cube") -> bool:
         """Checks if the rectangle has the same sides as another rectangle
            (works for child class 'Cube' aswell)"""
         if not self.validate_rect(other):
@@ -229,3 +243,29 @@ class Cube(Rectangle):
         if not isinstance(value_z, (float, int)):
             raise TypeError(f"value_z {value_z} must be of type float or int")
         self.z += value_z
+
+
+class Sphere(Circle):
+    def __init__(self, x: float, y: float, z: float, radius: float) -> None:
+        super().__init__(x, y, z, radius)
+
+    def set_volume(self) -> float:
+        return (4/3) * math.pi * (self.radius ** 3)
+
+    def set_surface_area(self) -> float:
+        return 4 * math.pi * self.radius**2
+
+    def is_inside(self, x: float, y: float, z: float) -> bool:
+        """Calculate if a point is inside of our circle
+            using the pythagoran theorem
+            (on the circle counts as inside the circle)"""
+        if not isinstance(x, (int, float)) or not isinstance(x, (float, int)):
+            raise TypeError("x and y must be of type float or int")
+        if (((x - self.x)**2 + (y - self.y) ** 2 + (z - self.z)**2)
+                <= self.radius**2):
+            return True
+        return False
+
+    def __repr__(self) -> str:
+        return (f"Sphere(x={self.x}, y={self.y}, " +
+                f"z={self.z}, radius={self.radius})")
